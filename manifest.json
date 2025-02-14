@@ -1,0 +1,13 @@
+{
+	"id": "nested-folder-lines",
+	"name": "Nested Folder Lines",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Adds colored nested folder lines and focus-based highlighting",
+	"authorUrl": "https://github.com/bwya77",
+	"fundingUrl": {
+		"Buy Me a Coffee": "https://buymeacoffee.com/bwya77",
+		"GitHub Sponsor":  "https://github.com/sponsors/bwya77"
+  	},
+	"isDesktopOnly": true
+}

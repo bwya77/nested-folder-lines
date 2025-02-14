@@ -1,0 +1,31 @@
+.nav-file-title,
+.nav-folder-title {
+    padding: 6px 8px 6px 24px !important;
+    position: relative !important;
+    transition: color 0.2s ease;
+}
+
+.nav-folder-children .nav-file-title,
+.nav-folder-children .nav-folder-title {
+    margin-left: 12px !important;
+}
+
+.nav-file-title::before,
+.nav-folder-title::before {
+    left: 6px !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.nav-folder-collapse-indicator {
+    margin-left: -12px !important;
+}
+
+/* Focus styles */
+[data-path].focused>.nav-file-title,
+[data-path].focused>.nav-folder-title,
+[data-path].focused,
+[data-path].focused * {
+    color: var(--nav-item-color) !important;
+}
