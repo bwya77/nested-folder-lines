@@ -2,7 +2,7 @@
 
 Add colored relationship lines to your files and folders in Obsidian, based on their nesting level. Enable focus mode to highlight active files and their parent folders, and set the relationship lines to be solid, dotted, or dashed.
 
-![rainbowtree plugin](/images/rainbowtree.png) 
+![rainbowtree plugin](/images/rainbow_tree.png) 
 
 ## Features
 
