@@ -4,18 +4,20 @@ interface NFLSettings {
     colors: string[];
     unfocusedColor: string;
     enableFocus: boolean;
+    lineStyle: 'solid' | 'dashed' | 'dotted';
 }
 
 const DEFAULT_SETTINGS: NFLSettings = {
-    colors: ['#71a0ff', '#ff7070', '#d574ff', '#50fe3d', '#71a0ff'],
+    colors: ['#ff5252', '#f99d6c', '#53c169', '#747dfb', '#f098fb'],
     unfocusedColor: '#999999',
-    enableFocus: true
+    enableFocus: true,
+    lineStyle: 'solid'
 };
 
 class NFLSettingTab extends PluginSettingTab {
-    plugin: NestedFolderLinesPlugin;
+    plugin: RainbowTreePlugin;
 
-    constructor(app: App, plugin: NestedFolderLinesPlugin) {
+    constructor(app: App, plugin: RainbowTreePlugin) {
         super(app, plugin);
         this.plugin = plugin;
     }
@@ -36,6 +38,19 @@ class NFLSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     }));
         });
+
+        new Setting(containerEl)
+            .setName('Line style')
+            .setDesc('Choose the style for folder connection lines')
+            .addDropdown(dropdown => dropdown
+                .addOption('solid', 'Solid')
+                .addOption('dashed', 'Dashed')
+                .addOption('dotted', 'Dotted')
+                .setValue(this.plugin.settings.lineStyle)
+                .onChange(async (value: 'solid' | 'dashed' | 'dotted') => {
+                    this.plugin.settings.lineStyle = value;
+                    await this.plugin.saveSettings();
+                }));
 
         new Setting(containerEl)
             .setName('Unfocused title color')
@@ -59,7 +74,7 @@ class NFLSettingTab extends PluginSettingTab {
     }
 }
 
-export default class NestedFolderLinesPlugin extends Plugin {
+export default class RainbowTreePlugin extends Plugin {
     private styleElement: HTMLStyleElement;
     private focusedPaths: Set<string> = new Set();
     settings: NFLSettings;
@@ -93,6 +108,7 @@ export default class NestedFolderLinesPlugin extends Plugin {
 
     onunload() {
         this.styleElement.remove();
+        document.body.classList.remove('plugin-nested-folder-lines-focus');
     }
 
     async loadSettings() {
@@ -133,14 +149,17 @@ export default class NestedFolderLinesPlugin extends Plugin {
         let baseStyles = '';
         const maxLevels = 10;
         
+        // Set CSS variable for unfocused color
+        document.body.style.setProperty('--nfl-unfocused-color', this.settings.unfocusedColor);
+        
         for (let i = 0; i < maxLevels; i++) {
             const colorIndex = i % this.settings.colors.length;
             const nestedSelectors = '.nav-folder-children '.repeat(i);
+            const color = this.settings.colors[colorIndex];
             
             baseStyles += `
-                ${nestedSelectors}.nav-folder-children {
-                    border-left: 1px solid ${this.settings.colors[colorIndex]} !important;
-                    margin-left: 12px !important;
+                ${nestedSelectors}.nav-folder-children::before {
+                    border-left: 1px ${this.settings.lineStyle} ${color};
                 }
             `;
         }
@@ -149,48 +168,13 @@ export default class NestedFolderLinesPlugin extends Plugin {
     }
 
     private updateFocusStyles() {
-        const existingFocusStyle = document.getElementById('nested-folder-lines-focus-styles');
-        if (existingFocusStyle) {
-            existingFocusStyle.remove();
-        }
+        // Toggle focus mode class on body
+        document.body.classList.toggle('plugin-nested-folder-lines-focus', this.settings.enableFocus);
 
-        const focusStyle = document.createElement('style');
-        focusStyle.id = 'nested-folder-lines-focus-styles';
-
-        let focusStyles = '';
-        
-        if (this.settings.enableFocus) {
-            focusStyles = `
-                .nav-file-title, .nav-folder-title {
-                    color: ${this.settings.unfocusedColor} !important;
-                    transition: color 0.2s ease;
-                }
-                
-                .nav-file-title .iconize-icon, .nav-folder-title .iconize-icon {
-                    opacity: 0.5 !important;
-                    transition: opacity 0.2s ease;
-                }
-            `;
-        }
-
-        this.focusedPaths.forEach(path => {
-            if (this.settings.enableFocus) {
-                focusStyles += `
-                    [data-path="${path}"] > .nav-file-title,
-                    [data-path="${path}"] > .nav-folder-title,
-                    [data-path="${path}"],
-                    [data-path="${path}"] * {
-                        color: var(--nav-item-color) !important;
-                    }
-                    
-                    [data-path="${path}"] .iconize-icon {
-                        opacity: 1 !important;
-                    }
-                `;
-            }
+        // Update focused paths
+        const elements = document.querySelectorAll('[data-path]');
+        elements.forEach(el => {
+            el.classList.toggle('focused', this.focusedPaths.has(el.getAttribute('data-path') || ''));
         });
-
-        focusStyle.textContent = focusStyles;
-        document.head.appendChild(focusStyle);
     }
 }

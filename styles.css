@@ -1,31 +1,45 @@
+.nav-folder-children {
+    position: relative;
+}
+
+.nav-folder-children::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+}
+
+/* Base transition styles */
 .nav-file-title,
 .nav-folder-title {
-    padding: 6px 8px 6px 24px !important;
-    position: relative !important;
     transition: color 0.2s ease;
 }
 
-.nav-folder-children .nav-file-title,
-.nav-folder-children .nav-folder-title {
-    margin-left: 12px !important;
+.nav-file-title .iconize-icon,
+.nav-folder-title .iconize-icon {
+    transition: opacity 0.2s ease;
 }
 
-.nav-file-title::before,
-.nav-folder-title::before {
-    left: 6px !important;
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+/* Focus mode styles */
+.plugin-nested-folder-lines-focus .nav-file-title,
+.plugin-nested-folder-lines-focus .nav-folder-title {
+    color: var(--nfl-unfocused-color, #999999);
 }
 
-.nav-folder-collapse-indicator {
-    margin-left: -12px !important;
+.plugin-nested-folder-lines-focus .nav-file-title .iconize-icon,
+.plugin-nested-folder-lines-focus .nav-folder-title .iconize-icon {
+    opacity: 0.5;
 }
 
-/* Focus styles */
-[data-path].focused>.nav-file-title,
-[data-path].focused>.nav-folder-title,
-[data-path].focused,
-[data-path].focused * {
+.plugin-nested-folder-lines-focus [data-path].focused>.nav-file-title,
+.plugin-nested-folder-lines-focus [data-path].focused>.nav-folder-title,
+.plugin-nested-folder-lines-focus [data-path].focused,
+.plugin-nested-folder-lines-focus [data-path].focused * {
     color: var(--nav-item-color) !important;
+}
+
+.plugin-nested-folder-lines-focus [data-path].focused .iconize-icon {
+    opacity: 1;
 }

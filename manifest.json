@@ -1,9 +1,9 @@
 {
-	"id": "nested-folder-lines",
-	"name": "Nested Folder Lines",
-	"version": "1.0.0",
+	"id": "rainbow-tree",
+	"name": "Rainbow Tree",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Adds colored nested folder lines and focus-based highlighting",
+	"description": "Adds colored relationship folder lines, focused-based higlighting, and allows you to set the relation lines to solid, dotted or dashed lines",
 	"author": "Bradley Wyatt",
 	"authorUrl": "https://github.com/bwya77",
 	"fundingUrl": {

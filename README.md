@@ -1,22 +1,25 @@
-# Nested Folder Lines
+# Rainbow Tree
 
-Add colored relationship lines to your files and folders in Obsidian, based on their nesting level. Enable focus mode to highlight active files and their parent folders.
+Add colored relationship lines to your files and folders in Obsidian, based on their nesting level. Enable focus mode to highlight active files and their parent folders, and set the relationship lines to be solid, dotted, or dashed.
 
-## Demo
-
-![Demo video](/images/demo.gif) 
+![rainbowtree](/images/rainbowtree.png) 
 
 ## Features
 
 - Set the colors to relationship lines
 - Show the relationship lines in the editor
 - Focus Mode: Folders and files that are not open are dimmed, including the icon in present.
+- Set the relation lines to be solid, dotted or dashed.
+
+### Focus Mode
+![focus mode](/images/focusmode.png) 
+Focus mode highlights active files and their parent folders, dimming the rest. In the screenshot above I have two files open, other files and folders are dimmed.
 
 ## Installation
 
 1. Open Obsidian Settings
 2. Navigate to Community Plugins and disable Safe Mode
-3. Click Browse and search for "Nested Folder Lines"
+3. Click Browse and search for "Rainbow Tree"
 4. Install the plugin
 5. Enable the plugin in your Community Plugins list
 
@@ -28,6 +31,7 @@ In the plugin settings, you can:
 
 - Set the color of the relationship lines for 1-5 levels of nesting
 - Enable focus mode that highlights active files and their parent folders, dimming the rest
+- Set the relationship lines to be solid, dotted, or dashed
 
 ![Settings Panel](/images/settings.png)
 
@@ -36,7 +40,7 @@ In the plugin settings, you can:
 
 If you encounter any issues or have suggestions:
 
-- Create an issue on [GitHub](https://github.com/bwya77/dynamic-editor-width/issues)
+- Create an issue on [GitHub](https://github.com/bwya77/rainbow-tree/issues)
 - Support the development:
   - [Buy Me a Coffee](https://buymeacoffee.com/bwya77)
   - [GitHub Sponsor](https://github.com/sponsors/bwya77)
@@ -54,7 +58,7 @@ Want to contribute or modify the plugin? Here's how to get started with the sour
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/bwya77/nested-folder-lines.git
+   git clone https://github.com/bwya77/rainbow-tree.git
    ```
 
 3. Navigate to the plugin directory:
@@ -92,4 +96,4 @@ To test your modifications:
 
 ## License
 
-[MIT](https://github.com/bwya77/nested-folder-lines/blob/main/LICENSE)
+[MIT](https://github.com/bwya77/rainbow-tree/blob/main/LICENSE)
