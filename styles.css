@@ -1,3 +1,4 @@
+/* Base folder line styles */
 .nav-folder-children {
     position: relative;
 }
@@ -9,9 +10,27 @@
     bottom: 0;
     left: 0;
     width: 1px;
+    border-left: 1px var(--nfl-line-style, solid) var(--nfl-level-1-color, #ff5252);
 }
 
-/* Base transition styles */
+/* Nested level styles */
+.nav-folder-children .nav-folder-children::before {
+    border-left-color: var(--nfl-level-2-color, #f99d6c);
+}
+
+.nav-folder-children .nav-folder-children .nav-folder-children::before {
+    border-left-color: var(--nfl-level-3-color, #53c169);
+}
+
+.nav-folder-children .nav-folder-children .nav-folder-children .nav-folder-children::before {
+    border-left-color: var(--nfl-level-4-color, #747dfb);
+}
+
+.nav-folder-children .nav-folder-children .nav-folder-children .nav-folder-children .nav-folder-children::before {
+    border-left-color: var(--nfl-level-5-color, #f098fb);
+}
+
+/* Transition styles */
 .nav-file-title,
 .nav-folder-title {
     transition: color 0.2s ease;

@@ -146,25 +146,16 @@ export default class RainbowTreePlugin extends Plugin {
     }
 
     private updateBaseStyles() {
-        let baseStyles = '';
-        const maxLevels = 10;
+        // Update CSS custom properties for colors
+        document.documentElement.style.setProperty('--nfl-unfocused-color', this.settings.unfocusedColor);
         
-        // Set CSS variable for unfocused color
-        document.body.style.setProperty('--nfl-unfocused-color', this.settings.unfocusedColor);
+        // Set custom properties for each color
+        this.settings.colors.forEach((color, index) => {
+            document.documentElement.style.setProperty(`--nfl-level-${index + 1}-color`, color);
+        });
         
-        for (let i = 0; i < maxLevels; i++) {
-            const colorIndex = i % this.settings.colors.length;
-            const nestedSelectors = '.nav-folder-children '.repeat(i);
-            const color = this.settings.colors[colorIndex];
-            
-            baseStyles += `
-                ${nestedSelectors}.nav-folder-children::before {
-                    border-left: 1px ${this.settings.lineStyle} ${color};
-                }
-            `;
-        }
-        
-        this.styleElement.textContent = baseStyles;
+        // Set line style
+        document.documentElement.style.setProperty('--nfl-line-style', this.settings.lineStyle);
     }
 
     private updateFocusStyles() {
