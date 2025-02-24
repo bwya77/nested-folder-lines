@@ -1,7 +1,7 @@
 {
 	"id": "rainbow-tree",
 	"name": "Rainbow Tree",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Adds colored relationship folder lines, focused-based higlighting, and allows you to set the relation lines to solid, dotted or dashed lines",
 	"author": "Bradley Wyatt",

@@ -10,7 +10,7 @@ interface NFLSettings {
 const DEFAULT_SETTINGS: NFLSettings = {
     colors: ['#ff5252', '#f99d6c', '#53c169', '#747dfb', '#f098fb'],
     unfocusedColor: '#999999',
-    enableFocus: true,
+    enableFocus: false,
     lineStyle: 'solid'
 };
 
@@ -71,12 +71,15 @@ class NFLSettingTab extends PluginSettingTab {
                     this.plugin.settings.enableFocus = value;
                     await this.plugin.saveSettings();
                 }));
+
+
     }
 }
 
 export default class RainbowTreePlugin extends Plugin {
     private styleElement: HTMLStyleElement;
     private focusedPaths: Set<string> = new Set();
+
     settings: NFLSettings;
 
     async onload() {
@@ -122,50 +125,51 @@ export default class RainbowTreePlugin extends Plugin {
     }
 
     private updateFocusedPaths() {
-        this.focusedPaths.clear();
+    this.focusedPaths.clear();
+    
+    const openLeaves = this.app.workspace.getLeavesOfType('markdown');
+    for (const leaf of openLeaves) {
+        const view = leaf.view;
+        const file = view instanceof MarkdownView ? view.file : null;
         
-        const openLeaves = this.app.workspace.getLeavesOfType('markdown');
-        for (const leaf of openLeaves) {
-            const view = leaf.view;
-            const file = view instanceof MarkdownView ? view.file : null;
+        if (file instanceof TFile) {
+            const filePath = file.path;
+            this.focusedPaths.add(filePath);
             
-            if (file instanceof TFile) {
-                const filePath = file.path;
-                this.focusedPaths.add(filePath);
-                
-                const pathSegments = filePath.split('/');
+            // Get all parent folders
+            const parts = filePath.split('/');
+            if (parts.length > 1) {
+                // Add parent paths for folder text highlighting
                 let currentPath = '';
-                for (let i = 0; i < pathSegments.length - 1; i++) {
-                    currentPath += (i > 0 ? '/' : '') + pathSegments[i];
+                for (let i = 0; i < parts.length - 1; i++) {
+                    currentPath += (i > 0 ? '/' : '') + parts[i];
                     this.focusedPaths.add(currentPath);
                 }
             }
         }
-        
-        this.updateFocusStyles();
     }
+    
+    this.updateFocusStyles();
+}
 
     private updateBaseStyles() {
-        // Update CSS custom properties for colors
         document.documentElement.style.setProperty('--nfl-unfocused-color', this.settings.unfocusedColor);
         
-        // Set custom properties for each color
         this.settings.colors.forEach((color, index) => {
             document.documentElement.style.setProperty(`--nfl-level-${index + 1}-color`, color);
         });
         
-        // Set line style
         document.documentElement.style.setProperty('--nfl-line-style', this.settings.lineStyle);
     }
 
     private updateFocusStyles() {
-        // Toggle focus mode class on body
         document.body.classList.toggle('plugin-nested-folder-lines-focus', this.settings.enableFocus);
 
-        // Update focused paths
-        const elements = document.querySelectorAll('[data-path]');
-        elements.forEach(el => {
-            el.classList.toggle('focused', this.focusedPaths.has(el.getAttribute('data-path') || ''));
+        document.querySelectorAll('[data-path]').forEach(el => {
+            const path = el.getAttribute('data-path');
+            if (path) {
+                el.classList.toggle('focused', this.focusedPaths.has(path));
+            }
         });
     }
 }
